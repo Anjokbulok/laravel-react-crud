@@ -1,6 +1,20 @@
 import { Head, Link } from '@inertiajs/react';
 
-export default function LandingPage() {
+interface Category {
+    id: number;
+    name: string;
+    description: string | null;
+}
+
+interface Feature {
+    id: number;
+    title: string;
+    description: string;
+    featured_image: string | null;
+    category: Category;
+}
+
+export default function LandingPage({ features = [] }: { features?: Feature[] }) {
     return (
         <>
             <Head title="Welcome">
@@ -790,6 +804,65 @@ export default function LandingPage() {
 
     </div>
 
+</section>
+
+{/* Feature Section */}
+<section className="bg-white py-20 border-t border-gray-100">
+    <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+            <p className="text-blue-600 font-semibold uppercase tracking-wide mb-2">
+                Features
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800">
+                Explore Our Prominent Features
+            </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {features.map((f) => (
+              <Link
+                href={`/features/${f.id}`}
+                key={f.id}
+                className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 group flex flex-col h-full"
+              >
+                {/* Image */}
+                <div className="relative h-56 overflow-hidden bg-gray-200"
+                >
+                  <img
+                    src={f.featured_image ? `/storage/${f.featured_image}` : `https://placehold.co/600x400/e2e8f0/475569?text=${encodeURIComponent(f.title)}`}
+                    alt={f.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-grow"
+                >
+                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2 block"
+                  >
+                    {f.category?.name}
+                  </span>
+
+                  <h3 className="text-xl font-bold text-gray-850 mb-3 group-hover:text-blue-600 transition-colors duration-200"
+                  >
+                    {f.title}
+                  </h3>
+
+                  <p className="text-gray-650 text-sm mb-6 flex-grow line-clamp-3"
+                  >
+                    {f.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+        </div>
+
+        {features.length === 0 && (
+            <div className="text-center py-12 text-gray-500">
+                No features available yet. Add some features from the dashboard.
+            </div>
+        )}
+    </div>
 </section>
 
 {/* Testimonial Section */}

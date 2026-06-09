@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
+    { title: 'Home', href: '/' },
     { title: 'Features', href: '/features' },
     { title: 'Feature Details', href: '#' },
 ];

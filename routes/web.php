@@ -6,8 +6,12 @@ use App\Http\Controllers\Api\FeatureController as ApiFeatureController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Models\Feature;
+
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('welcome', [
+        'features' => Feature::with('category')->orderByDesc('created_at')->get()
+    ]);
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
