@@ -27,31 +27,11 @@ interface Feature {
 export default function FeaturesIndex({ features, categories }: { features: any; categories: Category[] }) {
     const items = Array.isArray(features?.data) ? features.data : [];
 
-    const base = (typeof window !== 'undefined'
-        ? (import.meta as Record<string, Record<string, string | undefined>>).env.BASE_URL
-        : '') || '/';
-
-    const toBase = (u: string): string => {
-        try {
-            const origin = window.location.origin;
-            const baseFull = new URL(base, origin).toString();
-            const full = new URL(base + u, origin).toString();
-            if (full.startsWith(baseFull)) {
-                return full.slice(baseFull.length - 1) || full;
-            }
-            return full;
-        } catch {
-            return u;
-        }
-    };
-
     const imageUrl = (f: Feature) => {
         if (f.featured_image && f.featured_image.trim() !== '') {
-            const path = '/storage/' + f.featured_image;
-            const rel = toBase(path);
-            return rel;
+            return '/storage/' + f.featured_image;
         }
-        return toBase('https://placehold.co/600x400/e2e8f0/475569?text=' + encodeURIComponent(f.title.substring(0, 20)));
+        return 'https://placehold.co/600x400/e2e8f0/475569?text=' + encodeURIComponent(f.title.substring(0, 20));
     };
 
     const handleDelete = (id: number) => {
