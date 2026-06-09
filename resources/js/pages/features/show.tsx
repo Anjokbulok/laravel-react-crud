@@ -31,11 +31,29 @@ interface Feature {
 export default function FeatureShow({ feature }: { feature: Feature }) {
     const { auth } = usePage().props;
 
+    const base = (typeof window !== 'undefined'
+        ? (import.meta as Record<string, Record<string, string | undefined>>).env.BASE_URL
+        : '') || '/';
+
+    const toBase = (u: string): string => {
+        try {
+            const origin = window.location.origin;
+            const baseFull = new URL(base, origin).toString();
+            const full = new URL(base + u, origin).toString();
+            if (full.startsWith(baseFull)) {
+                return full.slice(baseFull.length - 1) || full;
+            }
+            return full;
+        } catch {
+            return u;
+        }
+    };
+
     const heroBg = useMemo(() => {
         if (feature.featured_image && feature.featured_image.trim() !== '') {
-            return `/storage/${feature.featured_image}`;
+            return toBase(`/storage/${feature.featured_image}`);
         }
-        return 'https://placehold.co/1200x500/e2e8f0/475569?text=' + encodeURIComponent(feature.title);
+        return toBase('https://placehold.co/1200x500/e2e8f0/475569?text=' + encodeURIComponent(feature.title));
     }, [feature.featured_image, feature.title]);
 
     return (

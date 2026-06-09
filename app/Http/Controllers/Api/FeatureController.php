@@ -23,12 +23,6 @@ class FeatureController extends Controller
             $query->where('is_published', $request->boolean('is_published'));
         }
 
-        if ($request->has('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', "%{$request->search}%")
-                    ->orWhere('description', 'like', "%{$request->search}%");
-            });
-        }
 
         $features = $query->orderByDesc('created_at')->paginate(15);
 
